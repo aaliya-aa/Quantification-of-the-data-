@@ -1,0 +1,23 @@
+# Using Kallisto tool for humans 
+# we want to build an index from our reference fasta file 
+# I get my reference mammalian transcriptome files from here: https://useast.ensembl.org/info/data/ftp/index.html
+
+kallisto index -i Homo_sapiens.GRCh38.cdna.all.index Homo_sapiens.GRCh38.cdna.all.fa.gz
+
+# now map reads to the indexed reference host transcriptome
+# use as many 'threads' as your machine will allow in order to speed up the read mapping process.
+# note that we're also including the '&>' at the end of each line
+# this takes the information that would've been printed to our terminal, and outputs this in a log file. 
+# $>.log command cane be ignored as well  
+# below is a sample code how quant -i function works
+
+# for exmaple: cutaneous leishmaniasis (CL) patients
+# CL01 will be the name of the file where kallisto output will be stored
+# This is for single end data
+
+kallisto quant -i Homo_sapiens.GRCh38.cdna.all.index -o CL01 -t 4 --single -l 250 -s 30 sample.fastq.gz &> CL01.log
+
+# For Paired end data
+
+kallisto quant -i Homo_sapiens.GRCh38.cdna.all.index -o CL01 -t 8 sample1_read1.fq.gz sample1_read2.fq.gz $> CL01.log
+
